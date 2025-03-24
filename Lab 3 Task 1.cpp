@@ -1,124 +1,100 @@
-#include<iostream>
-
+#include <iostream>
 using namespace std;
 
-template<class t>
+template <class T>
 class List {
 protected:
-	t* arr;
-	int maxSize;
-	int currentSize;
+    T* arr;
+    int maxSize;
+    int currentSize;
+
 public:
-	List(t* a, int ms, int cs)
-	{
-		arr = a;
-		maxSize = ms;
-		currentSize = cs;
-	}
-	virtual void addElementAtFirstIndex(Type) = 0;
-	virtual void addElementAtLastIndex(Type) = 0;
-	virtual t removeElementFromEnd() = 0;
-	virtual void removeElementFromStart() = 0;
-	virtual void display() = 0;
+    List(int ms) {
+        maxSize = ms;
+        currentSize = 0;
+        arr = new T[maxSize];
+    }
 
-	List(List& other) {
-		arr = other.arr;
-		maxSize = other.maxSize;
-		currentSize = other.currentSize;
-	}
+    virtual void addElementAtFirstIndex(T value) = 0;
+    virtual void addElementAtLastIndex(T value) = 0;
+    virtual T removeElementFromEnd() = 0;
+    virtual void removeElementFromStart() = 0;
+    virtual void display() = 0;
 
-	~List() {
-		Cout << "Destructor called! " << endl;
-	}
+    virtual ~List() { delete[] arr; }
 };
 
-class Derived :public List {
-protected:
-	int* arr;
-	int maxSize;
-	int currentSize;
+template <class T>
+class Derived : public List<T> {
 public:
-	Derived(int* a, int ms, int cs) : List(a, ms, cs)
-	{
-		arr = a;
-		maxSize = ms;
-		currentSize = cs;
-	}
-	void addElementAtFirstIndex(Type) {
-		if (currentSize < maxSize) {
-			for (int i = currentSize; i > 0; i--) {
-				arr[i] = arr[i - 1];
-			}
-			arr[0] = Type;
-			currentSize++;
-		}
-		else {
-			cout << "List is full!" << endl;
-		}
-	}
-	void addElementAtLastIndex(Type) {
-		if (currentSize < maxSize) {
-			arr[currentSize] = Type;
-			currentSize++;
-		}
-		else {
-			cout << "List is full!" << endl;
-		}
-	}
-	t removeElementFromEnd() {
-		if (currentSize > 0) {
-			currentSize--;
-			return arr[currentSize];
-		}
-		else {
-			cout << "List is empty!" << endl;
-		}
-	}
-	void removeElementFromStart() {
-		if (currentSize > 0) {
-			for (int i = 0; i < currentSize - 1; i++) {
-				arr[i] = arr[i + 1];
-			}
-			currentSize--;
-		}
-		else {
-			cout << "List is empty!" << endl;
-		}
-	}
-	void display() {
-		for (int i = 0; i < currentSize; i++) {
-			cout << arr[i] << " ";
-		}
-		cout << endl;
-	}
-	Derived(Derived& other) : List(other) {
-		arr = other.arr;
-		maxSize = other.maxSize;
-		currentSize = other.currentSize;
-	}
-	~Derived() {
-		cout << "Destructor called! " << endl;
-	}
+    Derived(int ms) : List<T>(ms) {}
+
+    void addElementAtFirstIndex(T value) {
+        if (this->currentSize < this->maxSize) {
+            for (int i = this->currentSize; i > 0; i--) {
+                this->arr[i] = this->arr[i - 1];
+            }
+            this->arr[0] = value;
+            this->currentSize++;
+        } else {
+            cout << "List is full!" << endl;
+        }
+    }
+
+    void addElementAtLastIndex(T value) {
+        if (this->currentSize < this->maxSize) {
+            this->arr[this->currentSize] = value;
+            this->currentSize++;
+        } else {
+            cout << "List is full!" << endl;
+        }
+    }
+
+    T removeElementFromEnd() {
+        if (this->currentSize > 0) {
+            this->currentSize--;
+            return this->arr[this->currentSize];
+        } else {
+            cout << "List is empty!" << endl;
+            return T();
+        }
+    }
+
+    void removeElementFromStart() {
+        if (this->currentSize > 0) {
+            for (int i = 0; i < this->currentSize - 1; i++) {
+                this->arr[i] = this->arr[i + 1];
+            }
+            this->currentSize--;
+        } else {
+            cout << "List is empty!" << endl;
+        }
+    }
+
+    void display() {
+        for (int i = 0; i < this->currentSize; i++) {
+            cout << this->arr[i] << " ";
+        }
+        cout << endl;
+    }
 };
 
+int main() {
+    Derived<int> d(5);
+    d.addElementAtLastIndex(1);
+    d.addElementAtLastIndex(2);
+    d.addElementAtLastIndex(3);
+    d.addElementAtLastIndex(4);
+    d.addElementAtLastIndex(5);
 
-int main()
-{
-	int arr[5] = { 1,2,3,4,5 };
-	Derived d(arr, 5, 5);
-	d.display();
-
-	d.addElementAtFirstIndex(0);
-	d.display();
-
-	d.addElementAtLastIndex(6);
-	d.display();
-
-	d.removeElementFromEnd();
-	d.display();
-
-	d.removeElementFromStart();
-	d.display();
-
-	return 0;
+    d.display();
+    d.addElementAtFirstIndex(0);
+    d.display();
+    d.addElementAtLastIndex(6);
+    d.display();
+    d.removeElementFromEnd();
+    d.display();
+    d.removeElementFromStart();
+    d.display();
+    return 0;
 }
