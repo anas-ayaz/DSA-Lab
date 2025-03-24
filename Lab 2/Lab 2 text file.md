@@ -1,0 +1,3 @@
+In the first task, a pure virtual function is made in an abstract class and then two classes are derived from it in which their respective areas are calculated and displayed. Objects are created in the main after which the functions are called.
+
+In the second task, an employee superclass is created with a virtual function calculate salary. Two employees are created further one being full time with a fixed salary as the part time one whose salary is calculated by hours and his hourly rate. They can either be entered by the user or can be coded in the program manually as done.
