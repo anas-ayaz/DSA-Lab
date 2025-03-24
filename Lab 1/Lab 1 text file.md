@@ -1,0 +1,1 @@
+This program is a simple c++ program that sorts the given array and then sorts it in ascending order. It first displays the array as it is and then sorts it. After sorting, the program displays the array in ascending order. 
